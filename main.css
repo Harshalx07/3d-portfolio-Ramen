@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Amatic+SC);
+@import url(https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap);
 *
 {
     margin: 0;
@@ -374,6 +375,474 @@ h1 {
         transform: scale(0.33, 0.33);
         top: 60%;
         opacity: 0;
+    }
+}
+
+:root {
+    --ui-bg: rgba(6, 15, 28, 0.74);
+    --ui-border: rgba(129, 244, 229, 0.26);
+    --ui-text: #f4fbff;
+    --ui-muted: rgba(225, 243, 255, 0.74);
+    --ui-cyan: #5af0ff;
+    --ui-green: #7cffab;
+    --ui-amber: #ffc857;
+    --ui-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+h1 {
+    bottom: -7vh;
+    width: 42vh;
+    min-width: 30vmax;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(244, 251, 255, 0.88);
+    animation: pulse 2.5s linear infinite;
+}
+
+.start{
+    top: calc((100vh - 64px)/2);
+    right: calc((100vw - 260px)/2);
+    width: 260px;
+    height: 64px;
+    border: 1px solid rgba(122, 255, 221, 0.5);
+    border-radius: 999px;
+    color: var(--ui-text);
+    background:
+        linear-gradient(135deg, rgba(10, 28, 42, 0.86), rgba(9, 16, 34, 0.92)) padding-box,
+        linear-gradient(135deg, rgba(90, 240, 255, 0.72), rgba(124, 255, 171, 0.56)) border-box;
+    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(20px);
+    font-size: 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .start:hover {
+        color: var(--ui-cyan);
+        border-color: rgba(90, 240, 255, 0.85);
+    }
+}
+
+.portfolio-shell {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.55s ease;
+}
+
+.portfolio-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 15% 100%, rgba(255, 98, 196, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(90, 240, 255, 0.16), transparent 24%),
+        radial-gradient(circle at 76% 80%, rgba(124, 255, 171, 0.11), transparent 20%);
+}
+
+body.experience-started .portfolio-shell {
+    opacity: 1;
+    visibility: visible;
+}
+
+.portfolio-identity,
+.portfolio-toggle,
+.portfolio-panel,
+.portfolio-hint {
+    pointer-events: auto;
+}
+
+.portfolio-identity {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    background: rgba(5, 10, 18, 0.48);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--ui-shadow);
+}
+
+.portfolio-identity__name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ui-text);
+}
+
+.portfolio-identity__role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ui-cyan);
+}
+
+.portfolio-toggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    border: 1px solid rgba(129, 244, 229, 0.28);
+    border-radius: 999px;
+    background: rgba(7, 17, 31, 0.72);
+    color: var(--ui-text);
+    padding: 12px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    backdrop-filter: blur(18px);
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.portfolio-toggle:hover {
+    transform: translateY(-1px);
+    color: var(--ui-cyan);
+    border-color: rgba(90, 240, 255, 0.58);
+}
+
+.portfolio-panel {
+    position: absolute;
+    top: 76px;
+    right: 24px;
+    width: min(420px, calc(100vw - 32px));
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+    padding: 22px;
+    border-radius: 30px;
+    border: 1px solid var(--ui-border);
+    background:
+        linear-gradient(180deg, rgba(9, 19, 35, 0.92), rgba(6, 13, 23, 0.72));
+    box-shadow: var(--ui-shadow);
+    backdrop-filter: blur(28px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.portfolio-panel__glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        radial-gradient(circle at top right, rgba(90, 240, 255, 0.2), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(255, 200, 87, 0.16), transparent 24%);
+    pointer-events: none;
+}
+
+.portfolio-panel > * {
+    position: relative;
+}
+
+.portfolio-eyebrow {
+    margin-bottom: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ui-green);
+}
+
+.portfolio-panel h2 {
+    font-size: clamp(1.8rem, 2.8vw, 2.45rem);
+    line-height: 1.05;
+    color: var(--ui-text);
+    margin-bottom: 14px;
+}
+
+.portfolio-lead {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--ui-muted);
+    margin-bottom: 18px;
+}
+
+.portfolio-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.portfolio-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--ui-text);
+    text-decoration: none;
+    font-size: 0.86rem;
+    transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+
+.portfolio-links a:hover {
+    border-color: rgba(90, 240, 255, 0.6);
+    color: var(--ui-cyan);
+    background: rgba(90, 240, 255, 0.08);
+}
+
+.portfolio-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin-bottom: 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    color: rgba(226, 239, 247, 0.7);
+}
+
+.portfolio-contact span {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.portfolio-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.portfolio-metrics article,
+.portfolio-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+    border-radius: 22px;
+}
+
+.portfolio-metrics article {
+    padding: 16px;
+}
+
+.portfolio-metrics strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.45rem;
+    color: var(--ui-amber);
+}
+
+.portfolio-metrics span {
+    display: block;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--ui-muted);
+}
+
+.portfolio-card {
+    padding: 18px;
+    margin-bottom: 14px;
+}
+
+.portfolio-card__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.portfolio-card__header h3 {
+    font-size: 1.02rem;
+    color: var(--ui-text);
+}
+
+.portfolio-card__header span,
+.portfolio-card__meta,
+.portfolio-project p:first-of-type {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    color: rgba(225, 243, 255, 0.68);
+}
+
+.portfolio-card__meta {
+    margin-bottom: 12px;
+}
+
+.portfolio-list {
+    padding-left: 18px;
+    color: var(--ui-muted);
+}
+
+.portfolio-list li {
+    margin-bottom: 10px;
+    line-height: 1.55;
+}
+
+.portfolio-project + .portfolio-project {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.portfolio-project h4 {
+    color: var(--ui-text);
+    font-size: 0.98rem;
+    margin-bottom: 6px;
+}
+
+.portfolio-project p {
+    color: var(--ui-muted);
+    line-height: 1.55;
+}
+
+.portfolio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.portfolio-tags span {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(12, 26, 41, 0.88);
+    border: 1px solid rgba(90, 240, 255, 0.12);
+    color: var(--ui-text);
+    font-size: 0.82rem;
+}
+
+.portfolio-hint {
+    position: absolute;
+    left: 22px;
+    bottom: 24px;
+    max-width: min(460px, calc(100vw - 32px));
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(5, 10, 18, 0.54);
+    backdrop-filter: blur(18px);
+    color: rgba(225, 243, 255, 0.78);
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.portfolio-hint__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ui-cyan), var(--ui-green));
+    box-shadow: 0 0 18px rgba(90, 240, 255, 0.7);
+    flex-shrink: 0;
+}
+
+.portfolio-shell.is-collapsed .portfolio-panel {
+    opacity: 0;
+    transform: translateX(24px);
+    pointer-events: none;
+}
+
+.portfolio-shell.is-collapsed .portfolio-toggle {
+    color: var(--ui-green);
+}
+
+.portfolio-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.portfolio-panel::-webkit-scrollbar-thumb {
+    background: rgba(90, 240, 255, 0.24);
+    border-radius: 999px;
+}
+
+@media (max-width: 960px) {
+    .portfolio-shell.is-collapsed .portfolio-panel {
+        transform: translateY(18px);
+    }
+
+    .portfolio-panel {
+        top: auto;
+        bottom: 88px;
+        right: 16px;
+        left: 16px;
+        width: auto;
+        max-height: min(72vh, 760px);
+    }
+
+    .portfolio-toggle {
+        top: auto;
+        right: 16px;
+        bottom: 24px;
+    }
+
+    .portfolio-hint {
+        left: 16px;
+        right: 112px;
+        bottom: 24px;
+        max-width: none;
+    }
+
+    .portfolio-identity {
+        top: 16px;
+        left: 16px;
+        right: 96px;
+    }
+}
+
+@media (max-width: 640px) {
+    h1 {
+        bottom: -10vh;
+        width: 80vw;
+        min-width: 0;
+        font-size: 0.92rem;
+        letter-spacing: 0.1em;
+    }
+
+    .start {
+        right: calc((100vw - min(84vw, 280px))/2);
+        width: min(84vw, 280px);
+    }
+
+    .portfolio-panel {
+        padding: 18px;
+        border-radius: 24px;
+    }
+
+    .portfolio-panel h2 {
+        font-size: 1.72rem;
+    }
+
+    .portfolio-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-contact {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-hint {
+        display: none;
     }
 }
 
