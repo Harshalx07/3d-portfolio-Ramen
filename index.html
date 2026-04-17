@@ -45,31 +45,31 @@
         }
 
         if (url.startsWith("/draco/") || url.startsWith("/basis/") || url.startsWith("/models/") || url.startsWith("/textures/") || url.startsWith("/assets/") || url.startsWith("/sounds/")) {
-          return `${repoBase}${url.slice(1)}`
-        }
-
-        return url
-      }
-
-      window.__PORTFOLIO_BASE_PATH__ = repoBase
+            const rewritten = `${repoBase}${url.slice(1)}`
+            console.log(`[Portfolio] Rewriting path: ${url} -> ${rewritten}`)
+            return rewritten
 
       const originalFetch = window.fetch
       if (originalFetch) {
         window.fetch = function (input, init) {
           if (typeof input === "string") {
-            return originalFetch.call(this, rewriteAssetPath(input), init)
-          }
+              const rewritten = rewriteAssetPath(input)
+              return originalFetch.call(this, rewritten, init).catch(err => {
+                console.error(`[Portfolio] Fetch failed for: ${rewritten}`, err)
+                throw err
+              })
+            }
 
-          if (input && typeof input.url === "string") {
-            return originalFetch.call(
-              this,
-              new Request(rewriteAssetPath(input.url), input),
-              init
-            )
-          }
-
-          return originalFetch.call(this, input, init)
-        }
+            if (input && typeof input.url === "string") {
+              const rewritten = rewriteAssetPath(input.url)
+              return originalFetch.call(
+                this,
+                new Request(rewritten, input),
+                init
+              ).catch(err => {
+                console.error(`[Portfolio] Fetch failed for: ${rewritten}`, err)
+                throw err
+              })
       }
 
       const originalOpen = XMLHttpRequest.prototype.open
