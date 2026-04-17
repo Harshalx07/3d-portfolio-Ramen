@@ -45,46 +45,46 @@
         }
 
         if (url.startsWith("/draco/") || url.startsWith("/basis/") || url.startsWith("/models/") || url.startsWith("/textures/") || url.startsWith("/assets/") || url.startsWith("/sounds/")) {
-            const rewritten = `${repoBase}${url.slice(1)}`
-            console.log(`[Portfolio] Rewriting path: ${url} -> ${rewritten}`)
-            return rewritten
+          const rewritten = `${repoBase}${url.slice(1)}`
+          console.log(`[Portfolio] Rewriting path: ${url} -> ${rewritten}`)
+          return rewritten
 
-      const originalFetch = window.fetch
-      if (originalFetch) {
-        window.fetch = function (input, init) {
-          if (typeof input === "string") {
-              const rewritten = rewriteAssetPath(input)
-              return originalFetch.call(this, rewritten, init).catch(err => {
-                console.error(`[Portfolio] Fetch failed for: ${rewritten}`, err)
-                throw err
-              })
-            }
+          const originalFetch = window.fetch
+          if (originalFetch) {
+            window.fetch = function (input, init) {
+              if (typeof input === "string") {
+                const rewritten = rewriteAssetPath(input)
+                return originalFetch.call(this, rewritten, init).catch(err => {
+                  console.error(`[Portfolio] Fetch failed for: ${rewritten}`, err)
+                  throw err
+                })
+              }
 
-            if (input && typeof input.url === "string") {
-              const rewritten = rewriteAssetPath(input.url)
-              return originalFetch.call(
-                this,
-                new Request(rewritten, input),
-                init
-              ).catch(err => {
-                console.error(`[Portfolio] Fetch failed for: ${rewritten}`, err)
-                throw err
-              })
-      }
+              if (input && typeof input.url === "string") {
+                const rewritten = rewriteAssetPath(input.url)
+                return originalFetch.call(
+                  this,
+                  new Request(rewritten, input),
+                  init
+                ).catch(err => {
+                  console.error(`[Portfolio] Fetch failed for: ${rewritten}`, err)
+                  throw err
+                })
+              }
 
-      const originalOpen = XMLHttpRequest.prototype.open
-      XMLHttpRequest.prototype.open = function (method, url, ...rest) {
-        return originalOpen.call(this, method, rewriteAssetPath(url), ...rest)
-      }
+              const originalOpen = XMLHttpRequest.prototype.open
+              XMLHttpRequest.prototype.open = function (method, url, ...rest) {
+                return originalOpen.call(this, method, rewriteAssetPath(url), ...rest)
+              }
 
-      const NativeWorker = window.Worker
-      if (NativeWorker) {
-        window.Worker = function (url, options) {
-          return new NativeWorker(rewriteAssetPath(url), options)
-        }
-        window.Worker.prototype = NativeWorker.prototype
-      }
-    })()
+              const NativeWorker = window.Worker
+              if (NativeWorker) {
+                window.Worker = function (url, options) {
+                  return new NativeWorker(rewriteAssetPath(url), options)
+                }
+                window.Worker.prototype = NativeWorker.prototype
+              }
+            }) ()
   </script>
   <script defer="defer" src="bundle.3ea4b3f1364c1bb7.js?v=2"></script>
   <script defer="defer" src="portfolio-overlay.js?v=2"></script>
@@ -93,13 +93,13 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y1BR9CXE0X"></script>
 <script>
-  window.dataLayer = window.dataLayer || []
-  function gtag() {
-    dataLayer.push(arguments)
-  }
-  gtag("js", new Date())
+          window.dataLayer = window.dataLayer || []
+          function gtag() {
+            dataLayer.push(arguments)
+          }
+          gtag("js", new Date())
 
-  gtag("config", "G-Y1BR9CXE0X")
+          gtag("config", "G-Y1BR9CXE0X")
 </script>
 
 <body>
