@@ -75,7 +75,61 @@
     <meta name="application-name" content="Harshal Galande Portfolio" />
     <meta name="msapplication-TileColor" content="#07111f" />
     <meta name="theme-color" content="#07111f" />
-    <script defer="defer" src="bundle.3ea4b3f1364c1bb7.js"></script>
+    <script>
+      ;(() => {
+        const path = window.location.pathname
+        const repoBase = path.endsWith("/")
+          ? path
+          : path.replace(/\/[^/]*$/, "/")
+
+        const rewriteAssetPath = (url) => {
+          if (typeof url !== "string") {
+            return url
+          }
+
+          if (url.startsWith("/draco/") || url.startsWith("/basis/")) {
+            return `${repoBase}${url.slice(1)}`
+          }
+
+          return url
+        }
+
+        window.__PORTFOLIO_BASE_PATH__ = repoBase
+
+        const originalFetch = window.fetch
+        if (originalFetch) {
+          window.fetch = function (input, init) {
+            if (typeof input === "string") {
+              return originalFetch.call(this, rewriteAssetPath(input), init)
+            }
+
+            if (input && typeof input.url === "string") {
+              return originalFetch.call(
+                this,
+                new Request(rewriteAssetPath(input.url), input),
+                init
+              )
+            }
+
+            return originalFetch.call(this, input, init)
+          }
+        }
+
+        const originalOpen = XMLHttpRequest.prototype.open
+        XMLHttpRequest.prototype.open = function (method, url, ...rest) {
+          return originalOpen.call(this, method, rewriteAssetPath(url), ...rest)
+        }
+
+        const NativeWorker = window.Worker
+        if (NativeWorker) {
+          window.Worker = function (url, options) {
+            return new NativeWorker(rewriteAssetPath(url), options)
+          }
+          window.Worker.prototype = NativeWorker.prototype
+        }
+      })()
+    </script>
+    <script defer="defer" src="bundle.3ea4b3f1364c1bb7.js?v=2"></script>
     <script defer="defer" src="portfolio-overlay.js?v=2"></script>
     <link href="main.css?v=2" rel="stylesheet" />
   </head>
