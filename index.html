@@ -87,7 +87,7 @@
             return url
           }
 
-          if (url.startsWith("/draco/") || url.startsWith("/basis/")) {
+          if (url.startsWith("/draco/") || url.startsWith("/basis/") || url.startsWith("/models/") || url.startsWith("/textures/") || url.startsWith("/assets/") || url.startsWith("/sounds/")) {
             return `${repoBase}${url.slice(1)}`
           }
 
